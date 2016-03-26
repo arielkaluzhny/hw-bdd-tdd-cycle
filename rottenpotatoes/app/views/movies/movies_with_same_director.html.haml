@@ -1,0 +1,12 @@
+
+%h2 Similar Movies page for #{@movie.title}
+
+%ul
+  %li
+    Director:
+    = @movie.director
+  %li
+    Other Movies with same director:
+    = find_with_same_director
+
+= link_to 'Back to movie list', movies_path
