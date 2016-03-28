@@ -20,6 +20,11 @@ module NavigationHelpers
       edit_movie_path(mov)
     when /^the details page for "(.+)"$/
       movie_path(Movie.find_by_title($1))
+    #  Then  I should be on the Similar Movies page for "Star Wars"
+    when /^the Similar Movies page for "(.+)"$/
+      same_director_movie_path(Movie.find_by_title($1))
+    when /^the Rotten Potatoes home page$/
+      '/movies'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
