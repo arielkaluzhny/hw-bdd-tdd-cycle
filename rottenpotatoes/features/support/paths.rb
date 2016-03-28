@@ -23,8 +23,8 @@ module NavigationHelpers
     #  Then  I should be on the Similar Movies page for "Star Wars"
     when /^the Similar Movies page for "(.+)"$/
       same_director_movie_path(Movie.find_by_title($1))
-    when /^the Rotten Potatoes home page$/
-      '/movies'
+    when /^the R(.+)P(.+)page$/
+      movies_path
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
