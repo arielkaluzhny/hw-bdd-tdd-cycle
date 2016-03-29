@@ -1,7 +1,7 @@
 require 'rails_helper'
 #require 'movies_controller'
 
-describe MoviesController do
+describe MoviesController, :type => :controller do
     describe 'same_director' do
         it 'should find a list of movies with the same director' do
             #write test here
@@ -18,7 +18,7 @@ describe MoviesController do
             @movie = double({:title => 'Titanic', :rating => 'PG-13', :director => 'James Cameron', :release_date => '17-Dec-1997'})
 
             expect(Movie).to receive(:find).with(@movie_id).and_return(@movie)
-            expect(Movie).to receive(:where).with(@movie.director).and_return(@movie)
+            expect(Movie).to receive(:where).with(:director => @movie.director).and_return(@movie)
             
             get :same_director, :id => @movie_id
             
