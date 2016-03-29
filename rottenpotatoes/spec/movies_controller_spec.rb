@@ -1,19 +1,9 @@
 require 'rails_helper'
-#require 'movies_controller'
 
 describe MoviesController, :type => :controller do
     describe 'same_director' do
         it 'should find a list of movies with the same director' do
             #write test here
-=begin
-            movie1 = {:title => 'Aladdin', :rating => 'G', :release_date => '25-Nov-1992'}
-            movie2 = {:title => 'Titanic', :rating => 'PG-13', :director => 'James Cameron', :release_date => '17-Dec-1997'}
-            movie3 = {:title => 'Avatar', :rating => 'PG-13', :director => 'James Cameron', :release_date => '18-Dec-2009'}
-            
-            @movie1 = Movie.create!(movie1)
-            @movie2 = Movie.create!(movie2)
-            @movie2 = Movie.create!(movie2)
-=end
             @movie_id = '1'
             @movie = double({:title => 'Titanic', :rating => 'PG-13', :director => 'James Cameron', :release_date => '17-Dec-1997'})
 
@@ -25,24 +15,56 @@ describe MoviesController, :type => :controller do
         end
         it 'should redirect to the homepage if there is no director information' do
             #write test here
+            @movie_id = '2'
+            @movie = double({:title => 'Aladdin', :rating => 'G', :release_date => '25-Nov-1992'})
+            expect(Movie).to receive(:find).with(@movie_id).and_return(@movie)
+            allow(@movie).to receive(:director)
             
+            get :same_director, :id => @movie_id
+            expect(response).to redirect_to(movies_path)
         end
     end
-=begin    
+  
     describe "create" do
-        it "creates a new movie"
+        it "creates a new movie" do
             movie = {:title => 'Aladdin', :rating => 'G', :release_date => '25-Nov-1992'}
-            @movie = Movie.create!(movie1)
+            @movie = Movie.create!(movie)
             expect(@movie).to be_an_instance_of(Movie) # syntax taken from HangpersonGame
+        end
     end
     
     describe "GET index" do
         it "renders the index template" do
-            movie1 = {:title => 'Aladdin', :rating => 'G', :release_date => '25-Nov-1992'}
-            @movie = Movie.create!(movie1)
+            #movie1 = {:title => 'Aladdin', :rating => 'G', :release_date => '25-Nov-1992'}
+            #@movie = Movie.create!(movie1)
             get :index
             expect(response).to render_template("index") # NO idea if this is right... got from online...
+        end
     end
-  end
-=end
+    
+    describe "update" do
+        it "changes a movie to the table" do
+            #write test here
+            @movie_id = '1'
+            @movie = double({:title => 'Titanic', :rating => 'PG-13', :release_date => '17-Dec-1997'})
+            expect(Movie).to receive(:find).with(@movie_id).and_return(@movie) 
+            expect(@movie).to receive(:update_attributes!).with(:director => "James Cameron").and_return(:true)
+            put :update, :id => @movie_id, :movie => {:director => "James Cameron"} 
+            #expect(@movie.director).to eq("James Cameron")
+            #expect(response).to redirect_to(movies_path)
+        end
+    end
+    
+    describe "destroy" do
+        it "removes a movie from the table" do
+            #write test here
+            @movie_id = '1'
+            @movie = double({:title => 'Titanic', :rating => 'PG-13', :release_date => '17-Dec-1997'})
+            expect(Movie).to receive(:find).with(@movie_id).and_return(@movie) 
+            expect(@movie).to receive(:destroy).and_return(:true)
+            delete :destroy, :id => @movie_id
+        end
+    end
+    
+    
 end
