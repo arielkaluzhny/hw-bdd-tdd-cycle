@@ -27,29 +27,29 @@ describe MoviesController, :type => :controller do
   
     describe "create" do
         it "creates a new movie" do
-            movie = {:title => 'Aladdin', :rating => 'G', :release_date => '25-Nov-1992'}
-            @movie = Movie.create!(movie)
-            expect(@movie).to be_an_instance_of(Movie) # syntax taken from HangpersonGame
-            #expect(flash[:notice]).to be_present
+            @movie_id = '1'
+            @movie_params = {:title => 'Titanic', :rating => 'PG-13', :release_date => '17-Dec-1997'}
+            @movie = double(@movie_params)
+            expect(Movie).to receive(:create!).with(@movie_params).and_return(@movie) 
+            
+            post :create, :id => @movie_id, :movie => {:title => 'Titanic', :rating => 'PG-13', :release_date => '17-Dec-1997'}
+            expect(flash[:notice]).to be_present
         end
     end
     
     describe "GET index" do
         it "renders the index template" do
             get :index
-            expect(response).to render_template("index") # NO idea if this is right... got from online...
+            expect(response).to render_template("index")
         end
-=begin
-        it "should have movies with rating in correct order" do
-                    #    @movies = Movie.where(rating: @selected_ratings.keys).order(ordering)
-            @ordering = {:release_date => :asc}
-            @rating = 'PG-13'
-            @movie_id = '1'
-            @movie = double({:title => 'Titanic', :rating => 'PG-13', :release_date => '17-Dec-1997'})
-            expect(Movie).to receive(:where).with(:rating => @rating)
-            expect(Movie).to receive(:order).with(@ordering)
+        it "should sort by title when needed" do
+            get :index, :sort => 'title'
+            expect(:title_header)
         end
-=end
+        it "should sort by date when needed" do
+            get :index, :sort => 'release_date'
+            expect(:date_header)
+        end
     end
     
     describe "update" do
